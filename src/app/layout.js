@@ -1,6 +1,14 @@
+"use client"
+
+import { ChakraProvider } from '@chakra-ui/react'
+import { CacheProvider } from '@chakra-ui/next-js'
 import { StoreProvider } from './Context/store'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
+import { GlobalTheme } from '@/theme'
+// import { ChakraProvider } from '@chakra-ui/react'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -10,11 +18,33 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+  
+
+
   return (
+    
+    <Auth0Provider
+    domain="dev-v8jrao5e6b41otbz.us.auth0.com"
+    clientId="CL9feMsEawZkOFpaLFJZe7lQJThlMmhM"
+    authorizationParams={{
+      redirect_uri: window.location.origin
+    }}
+    >
     <StoreProvider>
       <html lang="en">
-      <body className={inter.className}>{children}</body>
+        <head>
+          <title>LOL</title>
+        </head>
+      <body className={inter.className} style={{background: GlobalTheme.backgroundTheme}}>
+        <CacheProvider>
+        <ChakraProvider>
+        {children}
+        </ChakraProvider>
+        </CacheProvider>
+        </body>
     </html>
     </StoreProvider>
+    </Auth0Provider>
+  
   )
 }
